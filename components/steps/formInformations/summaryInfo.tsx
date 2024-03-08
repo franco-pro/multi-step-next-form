@@ -3,9 +3,9 @@ import { Button } from "../buttons/button";
 import Link from "next/link";
 
 interface props {
-  link: () => void; //condition pour retourner au step 2
-  arraySummary: any; //variable qui va stocker les elements qui sont stocker dans chooseInfos
-  elementsAddons: any; //variable qui stocke le tableau des elemenent addons
+  link?: () => void; //condition pour retourner au step 2
+  arraySummary?: any; //variable qui va stocker les elements qui sont stocker dans chooseInfos
+  elementsAddons?: any; //variable qui stocke le tableau des elemenent addons
 }
 export const SummaryInfo = ({ link, arraySummary, elementsAddons }: props) => {
   // console.log("array = ", arraySummary[0], elementsAddons);

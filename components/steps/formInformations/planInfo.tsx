@@ -5,10 +5,10 @@ import clsx from "clsx";
 import { SwitchToggle } from "@/components/switch";
 
 interface props {
-  handleChangeSelectFunction: any;
-  isSelect: any;
-  isChecked: boolean;
-  handleChangeCheckedFunction: any;
+  handleChangeSelectFunction?: any;
+  isSelect?: any;
+  isChecked?: boolean;
+  handleChangeCheckedFunction?: any;
 }
 export const PlanInfo = ({
   handleChangeCheckedFunction,

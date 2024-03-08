@@ -4,11 +4,11 @@ import { useState } from "react";
 import { Button } from "../buttons/button";
 
 interface props {
-  handleCheckedChange: any; //changer l'etat du input checked ou pas
-  isChecked: any; //variable stockant la valeur du checked initialement
-  elementsAddons: any; //variable stockant le tableau des valeurs utilisees par le component add-on. le tableau proprement dite est dans le component index.tsx
+  handleCheckedChange?: any; //changer l'etat du input checked ou pas
+  isChecked?: any; //variable stockant la valeur du checked initialement
+  elementsAddons?: any; //variable stockant le tableau des valeurs utilisees par le component add-on. le tableau proprement dite est dans le component index.tsx
 
-  isCheckedPlan: any; //variable stockant la valeur de isChecked dans le component plan. ca va nous aider ici pour connaitre si l'utilisateur a souscris au play month ou year
+  isCheckedPlan?: any; //variable stockant la valeur de isChecked dans le component plan. ca va nous aider ici pour connaitre si l'utilisateur a souscris au play month ou year
 }
 export const AddonsInfo = ({
   handleCheckedChange,
