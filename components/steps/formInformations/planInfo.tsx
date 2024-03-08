@@ -121,7 +121,7 @@ export const PlanInfo = ({
             Monthly
           </Typography>
           <SwitchToggle
-            isCheckedValue={isChecked}
+            isCheckedValue={isChecked || false}
             handleChange={handleChangeCheckedFunction}
           />
           <Typography
