@@ -31,55 +31,56 @@ export const SummaryInfo = ({ link, arraySummary, elementsAddons }: props) => {
       elementsAddons[0].price +
       elementsAddons[1].price +
       elementsAddons[2].price;
-  } else if (
-    (arraySummary[0][0] && arraySummary[0][1]) ||
-    (arraySummary[0][0] && arraySummary[0][2]) ||
-    (arraySummary[0][1] && arraySummary[0][2] && arraySummary[2].price > 15)
-  ) {
-    if (arraySummary[0][0] && arraySummary[0][1]) {
-      totalAddons = elementsAddons[0].price_year + elementsAddons[1].price_year;
-    } else if (arraySummary[0][0] && arraySummary[0][2]) {
-      totalAddons = elementsAddons[0].price_year + elementsAddons[2].price_year;
-    } else {
-      totalAddons = elementsAddons[1].price_year + elementsAddons[2].price_year;
-    }
-  } else if (
-    (arraySummary[0][0] && arraySummary[0][1]) ||
-    (arraySummary[0][0] && arraySummary[0][2]) ||
-    (arraySummary[0][1] && arraySummary[0][2] && arraySummary[2].price < 15)
-  ) {
-    if (arraySummary[0][0] && arraySummary[0][1]) {
-      totalAddons = elementsAddons[0].price + elementsAddons[1].price;
-    } else if (arraySummary[0][0] && arraySummary[0][2]) {
-      totalAddons = elementsAddons[0].price + elementsAddons[2].price;
-    } else {
-      totalAddons = elementsAddons[1].price + elementsAddons[2].price;
-    }
-  } else if (
-    arraySummary[0][0] ||
-    arraySummary[0][1] ||
-    (arraySummary[0][2] && arraySummary[2].price > 15)
-  ) {
-    if (arraySummary[0][0]) {
-      totalAddons = elementsAddons[0].price_year;
-    } else if (arraySummary[0][1]) {
-      totalAddons = elementsAddons[1].price_year;
-    } else {
-      totalAddons = elementsAddons[2].price_year;
-    }
-  } else if (
-    arraySummary[0][0] ||
-    arraySummary[0][1] ||
-    (arraySummary[0][2] && arraySummary[2].price < 15)
-  ) {
-    if (arraySummary[0][0]) {
-      totalAddons = elementsAddons[0].price;
-    } else if (arraySummary[0][1]) {
-      totalAddons = elementsAddons[1].price;
-    } else {
-      totalAddons = elementsAddons[2].price;
-    }
   }
+
+  if (arraySummary[0][0] && arraySummary[0][1] && arraySummary[2].price > 15) {
+    totalAddons = elementsAddons[0].price_year + elementsAddons[1].price_year;
+  } else if (
+    arraySummary[0][0] &&
+    arraySummary[0][2] &&
+    arraySummary[2].price > 15
+  ) {
+    totalAddons = elementsAddons[0].price_year + elementsAddons[2].price_year;
+  } else if (
+    arraySummary[0][1] &&
+    arraySummary[0][2] &&
+    arraySummary[2].price > 15
+  ) {
+    totalAddons = elementsAddons[1].price_year + elementsAddons[2].price_year;
+  }
+
+  if (arraySummary[0][0] && arraySummary[0][1] && arraySummary[2].price < 15) {
+    totalAddons = elementsAddons[0].price + elementsAddons[1].price;
+  } else if (
+    arraySummary[0][0] &&
+    arraySummary[0][2] &&
+    arraySummary[2].price < 15
+  ) {
+    totalAddons = elementsAddons[0].price + elementsAddons[2].price;
+  } else if (
+    arraySummary[0][1] &&
+    arraySummary[0][2] &&
+    arraySummary[2].price < 15
+  ) {
+    totalAddons = elementsAddons[1].price + elementsAddons[2].price;
+  }
+
+  if (arraySummary[0][0] && arraySummary[2].price > 15) {
+    totalAddons = elementsAddons[0].price_year;
+  } else if (arraySummary[0][1] && arraySummary[2].price > 15) {
+    totalAddons = elementsAddons[1].price_year;
+  } else if (arraySummary[0][2] && arraySummary[2].price > 15) {
+    totalAddons = elementsAddons[2].price_year;
+  }
+
+  if (arraySummary[0][0] && arraySummary[2].price < 15) {
+    totalAddons = elementsAddons[0].price;
+  } else if (arraySummary[0][1] && arraySummary[2].price < 15) {
+    totalAddons = elementsAddons[1].price;
+  } else if (arraySummary[0][2] && arraySummary[2].price < 15) {
+    totalAddons = elementsAddons[2].price;
+  }
+
   return (
     <div className="main flex flex-col gap-10">
       <div className="header">
