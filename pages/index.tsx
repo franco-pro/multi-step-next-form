@@ -2,12 +2,15 @@ import { ContainerDesktop } from "@/components/container/container-desktop";
 import { Button } from "@/components/steps/buttons/button";
 import { Finalsms } from "@/components/steps/finalsmg";
 import { AddonsInfo } from "@/components/steps/formInformations/addonsInfo";
+import { FormValidate } from "@/components/steps/formInformations/lib/validate";
 import { PersonalInfo } from "@/components/steps/formInformations/personalInfo";
 import { PlanInfo } from "@/components/steps/formInformations/planInfo";
 import { SummaryInfo } from "@/components/steps/formInformations/summaryInfo";
 import { Typography } from "@/iu/typography/typography";
 import clsx from "clsx";
+import { useFormik } from "formik";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 export default function Home() {
   //tableau pour enregistrer les informations des differents steps
@@ -33,23 +36,40 @@ export default function Home() {
   };
 
   // |----------------------------
-  //   |useState planInfo          |
+  //           personalInfo           |
   //  |---------------------------
   //useState pour gerer le state des formulaire dans personalInfo
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-  });
+  // const [formData, setFormData] = useState({
+  //   name: "",
+  //   email: "",
+  //   phone: "",
+  // });
 
-  //fonction de mise a jour des valeurs formData
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  // //fonction de mise a jour des valeurs formData
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
+  //   setFormData({
+  //     ...formData,
+  //     [name]: value,
+  //   });
+  // };
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      phone: "",
+    },
+    validate: FormValidate,
+    onSubmit, // Add an empty function as the onSubmit property
+  });
+  // console.log(formik.errors);
+
+  async function onSubmit(values: any) {
+    handleChangeStep();
+    chooseInfos.push(values);
+  }
+  console.log("array: ", chooseInfos);
 
   // |----------------------------
   // |        AddonsInfos       |
@@ -89,21 +109,13 @@ export default function Home() {
     }));
   };
 
-  //mapper les valeurs de isCheckedAdons
-
-  const mapCheckedValues = () => {
-    Object.keys(isCheckedAdons).forEach((key) => {
-      // console.log(`${key}: ${isCheckedAdons[key]}`);
-      // chooseInfos.push(isCheckedAdons);
-    });
-  };
-
   let elementsAddons: any = [];
   if (Object.keys(isCheckedAdons).length !== 0) {
     Object.keys(isCheckedAdons).forEach((key) => {
       elementsAddons.push(isCheckedAdons[key]);
     });
     chooseInfos.push(elementsAddons);
+    console.log(chooseInfos);
   }
 
   // |----------------------------
@@ -146,11 +158,11 @@ export default function Home() {
     selectValues.title = "Pro";
     selectValues.price = 150;
   }
-  // console.log(selectValues);
+  console.log(selectValues);
 
   //
-  chooseInfos.push(formData, selectValues);
-  // console.log(chooseInfos)
+  chooseInfos.push(formik.values, selectValues);
+  console.log(chooseInfos);
 
   // |----------------------------
   // |        Finishing Up        |
@@ -159,12 +171,7 @@ export default function Home() {
     <div className="w-[100vw] h-[100vh] flex bg-neutral-magnolia">
       <ContainerDesktop stepHeader={step} className=" ml-20">
         <div className="main flex flex-col gap-10">
-          {step === 1 && (
-            <PersonalInfo
-              handleChangeFunction={handleChange}
-              formData={formData}
-            />
-          )}
+          {step === 1 && <PersonalInfo formikVariable={formik} />}
           {step === 2 && (
             <PlanInfo
               handleChangeCheckedFunction={handleChangeChecked}
@@ -213,11 +220,13 @@ export default function Home() {
                 Go Back
               </Typography>
             </Button>
-            <Button type="button" color="primary" onClick={handleChangeStep}>
-              <Typography component="span" size="small">
-                {step === 4 ? "confirm" : "Next step"}
-              </Typography>
-            </Button>
+            {step !== 1 && (
+              <Button type="button" color="primary" onClick={handleChangeStep}>
+                <Typography component="span" size="small">
+                  {step === 4 ? "confirm" : "Next step"}
+                </Typography>
+              </Button>
+            )}
           </div>
         </div>
       </ContainerDesktop>

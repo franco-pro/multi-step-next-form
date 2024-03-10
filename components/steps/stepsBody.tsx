@@ -10,7 +10,7 @@ export const StepsBody = () => {
       id: 1,
       title: "Personal Info",
       sub_title: "Please provide your name, email adress , and phone number",
-      component: <PersonalInfo handleChangeFunction formData />,
+      component: <PersonalInfo />,
     },
     {
       id: 2,

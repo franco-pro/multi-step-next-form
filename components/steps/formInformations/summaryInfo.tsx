@@ -9,13 +9,12 @@ interface props {
 }
 export const SummaryInfo = ({ link, arraySummary, elementsAddons }: props) => {
   // console.log("array = ", arraySummary[0], elementsAddons);
-
   //conditions sur l'affichage du total des elemetsAddons
   let totalAddons = 0;
   if (
-    arraySummary[0][0] === true &&
-    arraySummary[0][1] === true &&
-    arraySummary[0][2] === true &&
+    arraySummary[0][0] &&
+    arraySummary[0][1] &&
+    arraySummary[0][2] &&
     arraySummary[2].price > 15
   ) {
     totalAddons =
@@ -23,9 +22,9 @@ export const SummaryInfo = ({ link, arraySummary, elementsAddons }: props) => {
       elementsAddons[1].price_year +
       elementsAddons[2].price_year;
   } else if (
-    arraySummary[0][0] === true &&
-    arraySummary[0][1] === true &&
-    arraySummary[0][2] === true &&
+    arraySummary[0][0] &&
+    arraySummary[0][1] &&
+    arraySummary[0][2] &&
     arraySummary[2].price < 15
   ) {
     totalAddons =
@@ -33,21 +32,53 @@ export const SummaryInfo = ({ link, arraySummary, elementsAddons }: props) => {
       elementsAddons[1].price +
       elementsAddons[2].price;
   } else if (
-    arraySummary[0][0] === true &&
-    arraySummary[0][1] === true &&
-    arraySummary[2].price > 15
+    (arraySummary[0][0] && arraySummary[0][1]) ||
+    (arraySummary[0][0] && arraySummary[0][2]) ||
+    (arraySummary[0][1] && arraySummary[0][2] && arraySummary[2].price > 15)
   ) {
-    totalAddons = elementsAddons[0].price_year + elementsAddons[1].price_year;
+    if (arraySummary[0][0] && arraySummary[0][1]) {
+      totalAddons = elementsAddons[0].price_year + elementsAddons[1].price_year;
+    } else if (arraySummary[0][0] && arraySummary[0][2]) {
+      totalAddons = elementsAddons[0].price_year + elementsAddons[2].price_year;
+    } else {
+      totalAddons = elementsAddons[1].price_year + elementsAddons[2].price_year;
+    }
   } else if (
-    arraySummary[0][0] === true &&
-    arraySummary[0][1] === true &&
-    arraySummary[2].price < 15
+    (arraySummary[0][0] && arraySummary[0][1]) ||
+    (arraySummary[0][0] && arraySummary[0][2]) ||
+    (arraySummary[0][1] && arraySummary[0][2] && arraySummary[2].price < 15)
   ) {
-    totalAddons = elementsAddons[0].price + elementsAddons[1].price;
-  } else if (arraySummary[0][0] === true && arraySummary[2].price > 15) {
-    totalAddons = elementsAddons[0].price_year;
-  } else if (arraySummary[0][0] === true && arraySummary[2].price < 15) {
-    totalAddons = elementsAddons[0].price;
+    if (arraySummary[0][0] && arraySummary[0][1]) {
+      totalAddons = elementsAddons[0].price + elementsAddons[1].price;
+    } else if (arraySummary[0][0] && arraySummary[0][2]) {
+      totalAddons = elementsAddons[0].price + elementsAddons[2].price;
+    } else {
+      totalAddons = elementsAddons[1].price + elementsAddons[2].price;
+    }
+  } else if (
+    arraySummary[0][0] ||
+    arraySummary[0][1] ||
+    (arraySummary[0][2] && arraySummary[2].price > 15)
+  ) {
+    if (arraySummary[0][0]) {
+      totalAddons = elementsAddons[0].price_year;
+    } else if (arraySummary[0][1]) {
+      totalAddons = elementsAddons[1].price_year;
+    } else {
+      totalAddons = elementsAddons[2].price_year;
+    }
+  } else if (
+    arraySummary[0][0] ||
+    arraySummary[0][1] ||
+    (arraySummary[0][2] && arraySummary[2].price < 15)
+  ) {
+    if (arraySummary[0][0]) {
+      totalAddons = elementsAddons[0].price;
+    } else if (arraySummary[0][1]) {
+      totalAddons = elementsAddons[1].price;
+    } else {
+      totalAddons = elementsAddons[2].price;
+    }
   }
   return (
     <div className="main flex flex-col gap-10">
@@ -100,63 +131,63 @@ export const SummaryInfo = ({ link, arraySummary, elementsAddons }: props) => {
               </Typography>
             </div>
             <hr className="" />
-            {arraySummary[0][0] === true && (
+            {arraySummary[0][0] && (
               <div className="flex justify-between gap-2">
                 <Typography
                   component="h3"
                   size="extra-small"
                   className=" text-neutral-cool-gray"
                 >
-                  {arraySummary[0][0] === true && elementsAddons[0].title}
+                  {arraySummary[0][0] && elementsAddons[0].title}
                 </Typography>
                 <Typography
                   component="h3"
                   size="extra-small"
                   className=" text-primary-marime-blue"
                 >
-                  {arraySummary[0][0] === true && arraySummary[2].price > 15
+                  {arraySummary[0][0] && arraySummary[2].price > 15
                     ? `$${elementsAddons[0].price_year} /yr`
                     : `$${elementsAddons[0].price} /mo`}
                 </Typography>
               </div>
             )}
 
-            {arraySummary[0][1] === true && (
+            {arraySummary[0][1] && (
               <div className="flex justify-between gap-2">
                 <Typography
                   component="h3"
                   size="extra-small"
                   className=" text-neutral-cool-gray"
                 >
-                  {arraySummary[0][1] === true && elementsAddons[1].title}
+                  {arraySummary[0][1] && elementsAddons[1].title}
                 </Typography>
                 <Typography
                   component="h3"
                   size="extra-small"
                   className=" text-primary-marime-blue"
                 >
-                  {arraySummary[0][1] === true && arraySummary[2].price > 15
+                  {arraySummary[0][1] && arraySummary[2].price > 15
                     ? `$${elementsAddons[1].price_year} /yr`
                     : `$${elementsAddons[1].price} /mo`}
                 </Typography>
               </div>
             )}
 
-            {arraySummary[0][2] === true && (
+            {arraySummary[0][2] && (
               <div className="flex justify-between gap-2">
                 <Typography
                   component="h3"
                   size="extra-small"
                   className=" text-neutral-cool-gray"
                 >
-                  {arraySummary[0][2] === true && elementsAddons[2].title}
+                  {arraySummary[0][2] && elementsAddons[2].title}
                 </Typography>
                 <Typography
                   component="h3"
                   size="extra-small"
                   className=" text-primary-marime-blue"
                 >
-                  {arraySummary[0][2] === true && arraySummary[2].price > 15
+                  {arraySummary[0][2] && arraySummary[2].price > 15
                     ? `$${elementsAddons[2].price_year} /yr`
                     : `$${elementsAddons[2].price} /mo`}
                 </Typography>
